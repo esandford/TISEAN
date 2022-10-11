@@ -1,0 +1,184 @@
+/bin/sh: line 3: c1: command not found
+/bin/sh: line 3: c2naive: command not found
+/bin/sh: line 3: xc2: command not found
+/bin/sh: line 3: c2d: command not found
+/bin/sh: line 3: c2g: command not found
+/bin/sh: line 3: c2t: command not found
+/bin/sh: line 3: pc: command not found
+/bin/sh: line 3: predict: command not found
+/bin/sh: line 3: stp: command not found
+/bin/sh: line 3: lazy: command not found
+/bin/sh: line 3: project: command not found
+/bin/sh: line 3: addnoise: command not found
+Version: ImageMagick 7.0.6-0 Q16 x86_64 2017-06-27 http://www.imagemagick.org
+Copyright: © 1999-2017 ImageMagick Studio LLC
+License: http://www.imagemagick.org/script/license.php
+Features: Cipher DPC HDRI OpenMP 
+Delegates (built-in): bzlib fontconfig freetype jng jpeg lcms lzma png tiff x xml zlib
+Usage: compare [options ...] image reconstruct difference
+
+Image Settings:
+  -alpha option        on, activate, off, deactivate, set, opaque, copy
+                       transparent, extract, background, or shape
+  -authenticate password
+                       decipher image with this password
+  -background color    background color
+  -colorspace type     alternate image colorspace
+  -compose operator    set image composite operator
+  -compress type       type of pixel compression when writing the image
+  -decipher filename   convert cipher pixels to plain pixels
+  -define format:option
+                       define one or more image format options
+  -density geometry    horizontal and vertical density of the image
+  -depth value         image depth
+  -dissimilarity-threshold value
+                       maximum distortion for (sub)image match
+  -encipher filename   convert plain pixels to cipher pixels
+  -extract geometry    extract area from image
+  -format "string"     output formatted image characteristics
+  -fuzz distance       colors within this distance are considered equal
+  -highlight-color color
+                       empasize pixel differences with this color
+  -identify            identify the format and characteristics of the image
+  -interlace type      type of image interlacing scheme
+  -limit type value    pixel cache resource limit
+  -lowlight-color color
+                       de-emphasize pixel differences with this color
+  -metric type         measure differences between images with this metric
+  -monitor             monitor progress
+  -negate              replace every pixel with its complementary color 
+  -profile filename    add, delete, or apply an image profile
+  -quality value       JPEG/MIFF/PNG compression level
+  -quiet               suppress all warning messages
+  -quantize colorspace reduce colors in this colorspace
+  -read-mask filename  associate a read mask with the image
+  -regard-warnings     pay attention to warning messages
+  -respect-parentheses settings remain in effect until parenthesis boundary
+  -sampling-factor geometry
+                       horizontal and vertical sampling factor
+  -seed value          seed a new sequence of pseudo-random numbers
+  -set attribute value set an image attribute
+  -quality value       JPEG/MIFF/PNG compression level
+  -repage geometry     size and location of an image canvas
+  -similarity-threshold value
+                       minimum distortion for (sub)image match
+  -size geometry       width and height of image
+  -subimage-search     search for subimage
+  -synchronize         synchronize image to storage device
+  -taint               declare the image as modified
+  -transparent-color color
+                       transparent color
+  -type type           image type
+  -verbose             print detailed information about the image
+  -version             print version information
+  -virtual-pixel method
+                       virtual pixel access method
+  -write-mask filename  associate a write mask with the image
+
+Image Operators:
+  -brightness-contrast geometry
+                       improve brightness / contrast of the image
+  -distort method args
+                       distort images according to given method and args
+  -level value         adjust the level of image contrast
+  -resize geometry     resize the image
+  -rotate degrees      apply Paeth rotation to the image
+  -sigmoidal-contrast geometry
+                       increase the contrast without saturating highlights or
+  -trim                trim image edges
+  -write filename      write images to this file
+
+Image Sequence Operators:
+  -crop geometry       cut out a rectangular region of the image
+
+Image Stack Operators:
+  -delete indexes      delete the image from the image sequence
+
+Miscellaneous Options:
+  -channel mask        set the image channel mask
+  -debug events        display copious debugging information
+  -help                print program options
+  -list type           print a list of supported option arguments
+  -log format          format of debugging information
+
+By default, the image format of 'file' is determined by its magic
+number.  To specify a particular image format, precede the filename
+with an image format name and a colon (i.e. ps:image) or specify the
+image type as the filename suffix (i.e. image.ps).  Specify 'file' as
+'-' for standard input or output.
+/bin/sh: line 3: upo: command not found
+/bin/sh: line 3: upoembed: command not found
+ option -h unrecognized - ignored
+Usage: cluster <options> graphfile
+    -C k - generate no more than k clusters (0)
+       0 : no limit
+    -c k - use clustering method k (0)
+       0 : use modularity
+       1 : use modularity quality
+    -o <outfile> - output file (stdout)
+    -v   - verbose mode
+    -?   - print usage
+/bin/sh: line 3: choose: command not found
+/bin/sh: line 3: rms: command not found
+/bin/sh: line 3: notch: command not found
+/bin/sh: line 3: autocor: command not found
+/bin/sh: line 3: spectrum: command not found
+/bin/sh: line 3: wiener1: command not found
+/bin/sh: line 3: wiener2: command not found
+/bin/sh: line 3: surrogates: command not found
+/bin/sh: line 3: endtoend: command not found
+/bin/sh: line 3: timerev: command not found
+/bin/sh: line 3: events: command not found
+/bin/sh: line 3: intervals: command not found
+/bin/sh: line 3: spikespec: command not found
+/bin/sh: line 3: spikeauto: command not found
+/bin/sh: line 3: henon: command not found
+/bin/sh: line 3: ikeda: command not found
+/bin/sh: line 3: lorenz: command not found
+/bin/sh: line 3: ar-run: command not found
+/bin/sh: line 3: xrecur: command not found
+/bin/sh: randomize_auto_exp_random: command not found
+/bin/sh: randomize_autop_exp_random: command not found
+/bin/sh: randomize_spikeauto_exp_random: command not found
+/bin/sh: randomize_spikespec_exp_event: command not found
+/bin/sh: randomize_uneven_exp_random: command not found
+/bin/sh: line 3: poincare: command not found
+/bin/sh: line 3: extrema: command not found
+/bin/sh: line 3: rescale: command not found
+/bin/sh: line 3: recurr: command not found
+/bin/sh: line 3: corr: command not found
+/bin/sh: line 3: mutual: command not found
+/bin/sh: line 3: false_nearest: command not found
+/bin/sh: line 3: lyap_r: command not found
+/bin/sh: line 3: lyap_k: command not found
+/bin/sh: line 3: lyap_spec: command not found
+/bin/sh: line 3: d2: command not found
+/bin/sh: line 3: av-d2: command not found
+/bin/sh: line 3: makenoise: command not found
+/bin/sh: line 3: nrlazy: command not found
+/bin/sh: line 3: low121: command not found
+/bin/sh: line 3: lzo-test: command not found
+/bin/sh: line 3: lfo-run: command not found
+/bin/sh: line 3: lfo-test: command not found
+/bin/sh: line 3: rbf: command not found
+/bin/sh: line 3: polynom: command not found
+/bin/sh: line 3: polyback: command not found
+/bin/sh: line 3: polynomp: command not found
+/bin/sh: line 3: polypar: command not found
+/bin/sh: line 3: ar-model: command not found
+/bin/sh: line 3: mem_spec: command not found
+/bin/sh: line 3: pca: command not found
+/bin/sh: line 3: ghkss: command not found
+/bin/sh: line 3: lfo-ar: command not found
+/bin/sh: line 3: xzero: command not found
+/bin/sh: line 3: xcor: command not found
+/bin/sh: line 3: boxcount: command not found
+/bin/sh: line 3: fsle: command not found
+/bin/sh: line 3: resample: command not found
+/bin/sh: line 3: histogram: command not found
+/bin/sh: line 3: nstat_z: command not found
+/bin/sh: line 3: sav_gol: command not found
+/bin/sh: line 3: delay: command not found
+/bin/sh: line 3: lzo-gm: command not found
+/bin/sh: line 3: arima-model: command not found
+/bin/sh: line 3: lzo-run: command not found
