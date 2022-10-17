@@ -76,9 +76,14 @@ c      x(1)=sqrt(s*(r+1.d0))+2.
 c      x(2)=x(1)-1.d0
 c      x(3)=r
 
-      x(1)=5.
-      x(2)=-10.
-      x(3)=3.
+c initial conditions/initial point on trajectory
+c in my python version i've been using r0 = np.array((-13.29390985, -16.32060497,  29.90864944))
+c      x(1)=5.
+c      x(2)=-10.
+c      x(3)=3.
+      x(1)=-13.29390985
+      x(2)=-16.32060497
+      x(3)=29.90864944
 
       do 1 i=1,3
        sliap(i)=0.d0
