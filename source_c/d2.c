@@ -306,6 +306,7 @@ int main(int argc,char **argv)
     show_options(argv[0]);
   
   scan_options(argc,argv);
+
 #ifndef OMIT_WHAT_I_DO
   if (verbosity&VER_INPUT)
     what_i_do(argv[0],WID_STR);
