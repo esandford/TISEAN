@@ -171,7 +171,6 @@ void scramble(void)
                                               //actually deterministic, not random? "random" indices
                                               //will always be the same if the array to be shuffled
                                               //is the same length)
-    //printf("rz[i] is %f",rz[i]);
   }
   
   //SCBOX = "size of the box for the scramble routine" = 4096
@@ -187,9 +186,7 @@ void scramble(void)
     // m is a random integer between 0 and 4095, inclusive
     // scbox1 is SCBOX-1 = 4095
     
-    //printf("initially scbox1 is %ld ",scbox1); //4095
-    //printf("initially scbox1 address is %p ",&scbox1);
-    m=(int)(rz[i]*sceps)&scbox1; //scbox1 is still 4095 after this, and its address doesn't change
+    m=(int)(rz[i]*sceps)&scbox1; //bitwise AND with scbox1 = 111111111
 
     // scfound's ith entry points to scbox's mth entry
     scfound[i]=scbox[m];
@@ -201,9 +198,6 @@ void scramble(void)
     scbox[m]=i;
   }
 
-  /*for (i=0;i<hlength;i++){
-    printf("scfound[i] is %ld ",scfound[i]);
-  }*/
 
   //loop through scbox array
   for (i=0;i<SCBOX;i++) {
@@ -212,7 +206,6 @@ void scramble(void)
 
     // for elements that do not equal -1 (there are hlength of these)
     while(element != -1) {
-      //printf("initially scnfound is %ld ",scnfound);
       // initially:
       // scnhelp[0] = element
       // but on later loops:
@@ -233,7 +226,6 @@ void scramble(void)
       //this line also increments scnfound; if it was 0 above it is now 1 after this line
       //(and will stay 1 if the loop repeats)
       schelp[scnfound++]=rz[element];
-      //printf("now scnfound is %ld ",scnfound);
       element=scfound[element];
 
       //this while loop ends when element does equal -1. so the point of it
@@ -241,12 +233,7 @@ void scramble(void)
       //and to populate schelp with rz["element"s] where "element" not equal to -1
       //(but only the first couple of entries of scnhelp and schelp?)
     }
-    
-    /*for(i=0;i<hlength;i++){
-      printf("schelp[i] is %f ", schelp[i]);
-      printf("scnhelp[i] is %ld ", scnhelp[i]);
-    }*/
-    
+        
     // scan through elements of schelp and swap them
     for (j=0;j<scnfound-1;j++)
       for (k=j+1;k<scnfound;k++)
@@ -264,7 +251,7 @@ void scramble(void)
 
     //allscr counts up to hlength
     allscr += scnfound;
-    //printf("allscr is %lu ", allscr);
+
   }
 
   free(rz);
@@ -273,17 +260,17 @@ void scramble(void)
 }
 
 //count nearest neighbors to populate found[1:][:] 
+//the distance computed between points is the Chebyshev distance,
+//i.e. max{|x_i - x_j|} for vector elements i, jf
 void make_c2_dim(int n)
 {
   char small;
   long i,j,k,x,y,i1,i2,j1,element,n1,maxi,count,hi;
   double *hs,max,dx;
-  
   //hs is an array of length (EMBED*DIM)
   //= an array of length (10*1)= (10,) for our purposes
   check_alloc(hs=(double*)malloc(sizeof(double)*EMBED*DIM));
   n1=scr[n];
-  //printf("n1 is %ld ", n1);
 
   count=0;
   for (i1=0;i1<EMBED;i1++) {
@@ -297,31 +284,26 @@ void make_c2_dim(int n)
       //   hs[1] = series[0][scr[n] + 1*DELAY], ...
       //...hs[9] = series[0][scr[n] + 9*DELAY]
     }
-    //printf("count is %ld ", count);
-    //printf("hs[count] is %f ", hs[count-1]);
   }
-  //printf("count is %ld", count); //count is 10 because it has incremented every time i1
+  //count is now 10 because it has incremented every time i1
   // increases, up to EMBED=10
   
   //locations in the box
   //recall EPSMAX defaults to the range of the time series
   //imax = NMAX-1 = 255
   
-  //printf("imax is %d ", imax);
-  //printf("hs[0] is %f ", hs[0]);
-  //printf("epsinv is %f ", epsinv);
-  //printf("hs[0]*epsinv is %f ", hs[0]*epsinv);
-  printf("bitwise and is %d ", (int)(hs[0]*epsinv)&imax);
-  x=(int)(hs[0]*epsinv)&imax; // x = hs[0]/EPSMAX (imax = 0; bitwise "and" in effect but doesn't change anything)
-  y=(int)(hs[1]*epsinv)&imax; // y = hs[1]/EPSMAX
-  printf("x is %ld ", x);
+  x=(int)(hs[0]*epsinv*NMAX)&imax; // x = hs[0]/EPSMAX (imax = 0; bitwise "and" in effect but doesn't change anything)
+  y=(int)(hs[1]*epsinv*NMAX)&imax; // y = hs[1]/EPSMAX
 
-
-  //check elements in adjacent boxes as well as this box
-  for (i1=x-1;i1<=x+1;i1++) {
+  //check elements in all boxes
+  //possible to edit the range of this loop to exclude boxes which are
+  //nearer/farther than the scale of interest
+  for (i1=0;i1<=imax;i1++) {
     i2=i1&imax;
-    for (j1=y-1;j1<=y+1;j1++) {
+    for (j1=0;j1<=imax;j1++) {
       element=box[i2][j1&imax];
+
+      //while there are elements in this box
       while (element != -1) {
         //if safely outside the Theiler window:
         if (labs((long)(element-n1)) > MINDIST) {
@@ -342,7 +324,8 @@ void make_c2_dim(int n)
                 //first loop: if dx > 0;
                 //subsequent loops: if dx exceeds earlier dxs,
                 //  i.e. dx becomes the max over all 1D distances between
-                //  elements of the delay vectors?
+                //  elements of the delay vectors
+                // (because we're computing the Chebyshev distance!)
 
                 //if dx > max, new pair to index
                 if (dx > max) {
@@ -365,24 +348,28 @@ void make_c2_dim(int n)
                     maxi=(lneps-log(max))/lnfac;
                   }
                 }
+
+                //found is an array of size (DIM*EMBED, HOWOFTEN) = default (1*10, 100)
+                // here we're indexing into the DIM*EMBED dimension with "count"
+
                 //don't do anything to first row of found, i.e. found[0]--
                 // that will be filled in by the make_c2_1 function below.
                 //for subsequent rows found[count], add 1 "near neighbor found"
                 // to every found[count][k] where k <= the index corresponding
                 // to distance dx in log space (i.e. dx becomes the radius of our ball)
 
-                //tktk: how does this avoid double-counting?
                 if (count > 0)
                   for (k=imin;k<=maxi;k++)
                     found[count][k] += 1.0;
               }
-
               //else, dx > max range of interest, so stop
               else {
                 small=1;
                 break;
               }
+
               count++;
+
             }
             if (small)
               break;
@@ -405,13 +392,13 @@ void make_c2_1(int n)
   n1=scr[n];
   hs=series[0][n1];
   
-  x=(int)(hs*epsinv)&imax;
+  x=(int)(hs*epsinv*NMAX)&imax;
   
   //exactly the same calculation as make_c2_dim, but only in 1 dimension
   //and results are stored in found[0]
   //notice no delay time involved here at all; we're computing distances
   //between time series points, not between elements of delay vectors
-  for (i1=x-1;i1<=x+1;i1++) {
+  for (i1=0;i1<=imax;i1++) {
     element=boxc1[i1&imax];
     while (element != -1) {
       if (labs(element-n1) > MINDIST) {
@@ -512,6 +499,7 @@ int main(int argc,char **argv)
   if (!eps_min_set)
     EPSMIN *= maxinterval;
 
+    
   //EPSMAX will have the value abs(EPSMAX) if abs(EPSMAX)<maxinterval, and the value
   //maxinterval otherwise.
   EPSMAX=(fabs(EPSMAX)<maxinterval) ? fabs(EPSMAX) : maxinterval;
@@ -608,7 +596,6 @@ int main(int argc,char **argv)
 
   //looping over the number of delay vectors = length-(delay*(m-1))
   for (i=0;i<(length-(EMBED-1)*DELAY);i++){
-    //printf("scr[i] is %lu ",scr[i]);
     oscr[scr[i]]=i; //now we have e.g. scr[0] = 3078; oscr[3078] = 0
   }
 
@@ -649,14 +636,10 @@ int main(int argc,char **argv)
     //sn = "scrambled n" I guess
     //   = n-1th "scrambled" index, where the indices in "scr" run from 0 to nmax
     sn=scr[n-1];
-    //printf("n is %ld ", n);   //1
-    //printf("n-1 is %ld ",n-1);//0
-    //printf("sn is %ld ",sn);  //3078
-
     //if time series entries are higher-dimensional than 1 (not the case for our purposes)
     if (DIM > 1) {
-      x=(long)(series[0][sn]*epsinv)&imax;
-      y=(long)(series[1][sn]*epsinv)&imax;
+      x=(long)(series[0][sn]*epsinv*NMAX)&imax;
+      y=(long)(series[1][sn]*epsinv*NMAX)&imax;
     }
     // x is the "sn"th entry in the time series * (1/EPSMAX) 
     //       = ("sn"th entry)/(max length scale for correlation dimension calculation)
@@ -667,29 +650,23 @@ int main(int argc,char **argv)
       //not much dynamic range in the white noise time series, so
       //x and y do not change over the course of the whole n loop
 
-      x=(long)(series[0][sn]*epsinv)&imax; //the &imax here is a binary AND (not the unary address-of operator)
-                                           //i THINK the effect of it is a "floor" operation
-                                           //to produce an integer "x"
-                                           //waaaait, this is why the box size has to be
-                                           //a power of 2 I think? so we can do this bitwise stuff?
-      y=(long)(series[0][sn+DELAY]*epsinv)&imax;
+      x=(long)(series[0][sn]*epsinv*NMAX)&imax; //the &imax here is a binary AND (not the unary address-of operator)
+      y=(long)(series[0][sn+DELAY]*epsinv*NMAX)&imax;
 
     }
 
     //list, listc1 are both arrays of the same length as the time series
-
-    //list[sn] = list[scr[0]] = list[3078] = box[25][25] = -1
+    //first loop: list[this loop's sn] = -1
+    //subs loops: list[this loop's sn] = last loop's sn
     list[sn]=box[x][y];
-    //printf("box[x][y] is %ld ",box[x][y]);
-
-    // box[25][25] = 3078
-    // putting delay vectors in boxes as we go
+    
+    //remove a "-1" value from box
     box[x][y]=sn;
 
-    //listc1[3078] = boxc1[25] = -1
+    //put a "-1" value into listc1
     listc1[sn]=boxc1[x];
 
-    //boxc1[25] = 3078
+    //remove a "-1" value from boxc1
     boxc1[x]=sn;
 
     //imin=0 for now
@@ -721,12 +698,12 @@ int main(int argc,char **argv)
         for (i1=0;i1<n;i1++) {
           sn=scr[i1];
           if (DIM > 1) {
-            x=(long)(series[0][sn]*epsinv)&imax;
-            y=(long)(series[1][sn]*epsinv)&imax;
+            x=(long)(series[0][sn]*epsinv*NMAX)&imax;
+            y=(long)(series[1][sn]*epsinv*NMAX)&imax;
           }
           else {
-            x=(long)(series[0][sn]*epsinv)&imax;
-            y=(long)(series[0][sn+DELAY]*epsinv)&imax;
+            x=(long)(series[0][sn]*epsinv*NMAX)&imax;
+            y=(long)(series[0][sn+DELAY]*epsinv*NMAX)&imax;
           }
           list[sn]=box[x][y];
           box[x][y]=sn;
