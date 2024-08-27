@@ -23,10 +23,20 @@ You may use and refer to them as you do with any scientific publication.
 
 > netscape index.html
 
-** To install type 
+** To install on osx intel type 
 
 > ./configure --prefix=/Users/Emily
 > make
+> make install
+
+** To install on osx M1 chip architecture type
+> ./configure --prefix=/Users/Emily
+> make
+
+Then edit the Makefiles in . , ./source_c , and ./source_c/routines to include
+CFLAGS = -fpermitted-flt-eval-methods=c11
+
+and then run
 > make install
 
 and observe the warnings :-)
